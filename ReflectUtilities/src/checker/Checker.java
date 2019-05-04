@@ -258,7 +258,7 @@ public class Checker {
         SB.append('\n');
 
         Arrays.stream(C.getDeclaredFields())
-                .filter(x -> x.getAnnotation(SetterToCheck.class) != null)
+                .filter(x -> x.getAnnotation(GetterToCheck.class) != null)
                 .forEach(f -> {
                     checkGetter(f, f.getAnnotation(GetterToCheck.class));
                 });
@@ -360,68 +360,7 @@ public class Checker {
         return SB.toString();
     }
 
-    public static class M1 {
-
-        int a;
-        private int b;
-
-        @Override
-        public String toString() {
-            return "M1{" + "a=" + a + ", b=" + b + '}';
-        }
-
-    }
-
-    public static class M2 {
-
-        private M1 a = new M1();
-
-        final M1 b = new M1();
-
-        private double c;
-
-        @Override
-        public String toString() {
-            return "M2{" + "a=" + a + ", b=" + b + ", c=" + c + '}';
-        }
-
-    }
-
-    public static class I1 {
-
-        private int c;
-    }
-
-    public static class I2 {
-
-        final int d = 0;
-    }
-
-    public static class I3 {
-
-        final I2 e = new I2();
-    }
-
-    public static class M4 {
-
-        private int f;
-
-        public int getF() {
-            return f;
-        }
-
-        public void setF(int f) {
-            this.f = f;
-        }
-
-    }
-
     private String initial(String name) {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
-    }
-
-    public static void main(String[] args) {
-        Checker chk = new Checker(A.class);
-        System.out.println(chk);
     }
 }

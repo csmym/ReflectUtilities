@@ -3,6 +3,7 @@
  */
 package reflect;
 
+import checker.Checker;
 import exceptions.NoSimpleConstructor;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -426,13 +427,4 @@ public class ReflectUtilities {
         double x;
     }
 
-    public static void main(String[] args) throws Exception {
-        A a = (A) randomValue(A.class);
-        B b = (B) randomValue(B.class);
-        System.out.println(a.x);
-        System.out.println(b.x);
-        b = (B) clone(a, B.class);
-        System.out.println(a.x);
-        System.out.println(b.x);
-    }
 }
