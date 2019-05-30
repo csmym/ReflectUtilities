@@ -10,9 +10,9 @@ import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import reflect.ReflectUtilities;
 
-import rf.geom.Segment;
-import rf.geom.Point;
-import rf.geom.Triangle;
+import ec.geom.Segment;
+import ec.geom.Point;
+import ec.geom.Triangle;
 
 /**
  *
@@ -105,7 +105,7 @@ public class TriangleTest {
         System.out.println("setP1");
         try {
             Method x = Triangle.class.getDeclaredMethod("setP1",
-                     Point.class);
+                    Point.class);
             assertTrue("Revoir setP1 (Modificateurs)", Modifier.isPrivate(1) == Modifier.isPrivate(x.getModifiers()));
             assertTrue("Revoir setP1 (Modificateurs)", Modifier.isProtected(1) == Modifier.isProtected(x.getModifiers()));
             assertTrue("Revoir setP1 (Modificateurs)", Modifier.isPublic(1) == Modifier.isPublic(x.getModifiers()));
@@ -137,7 +137,7 @@ public class TriangleTest {
         System.out.println("setP2");
         try {
             Method x = Triangle.class.getDeclaredMethod("setP2",
-                     Point.class);
+                    Point.class);
             assertTrue("Revoir setP2 (Modificateurs)", Modifier.isPrivate(1) == Modifier.isPrivate(x.getModifiers()));
             assertTrue("Revoir setP2 (Modificateurs)", Modifier.isProtected(1) == Modifier.isProtected(x.getModifiers()));
             assertTrue("Revoir setP2 (Modificateurs)", Modifier.isPublic(1) == Modifier.isPublic(x.getModifiers()));
@@ -169,7 +169,7 @@ public class TriangleTest {
         System.out.println("setP3");
         try {
             Method x = Triangle.class.getDeclaredMethod("setP3",
-                     Point.class);
+                    Point.class);
             assertTrue("Revoir setP3 (Modificateurs)", Modifier.isPrivate(1) == Modifier.isPrivate(x.getModifiers()));
             assertTrue("Revoir setP3 (Modificateurs)", Modifier.isProtected(1) == Modifier.isProtected(x.getModifiers()));
             assertTrue("Revoir setP3 (Modificateurs)", Modifier.isPublic(1) == Modifier.isPublic(x.getModifiers()));
@@ -229,6 +229,22 @@ public class TriangleTest {
     }
 
     @Test
+    public void p000034000_checkMethodTriangletoString() {
+        System.out.println("toString");
+        try {
+            Method x = Triangle.class.getDeclaredMethod("toString"
+            );
+            assertTrue("Revoir toString (Modificateurs)", Modifier.isPrivate(1) == Modifier.isPrivate(x.getModifiers()));
+            assertTrue("Revoir toString (Modificateurs)", Modifier.isProtected(1) == Modifier.isProtected(x.getModifiers()));
+            assertTrue("Revoir toString (Modificateurs)", Modifier.isPublic(1) == Modifier.isPublic(x.getModifiers()));
+            assertTrue("Revoir toString (Modificateurs)", Modifier.isStatic(1) == Modifier.isStatic(x.getModifiers()));
+            assertTrue("Revoir toString (Retour)", x.getReturnType().equals(String.class));
+        } catch (NoSuchMethodException | SecurityException ex) {
+            fail("Revoir toString");
+        }
+    }
+
+    @Test
     public void p000037000_testMethodTrianglegetPerimetre() {
         System.out.println("Test Method Triangle.getPerimetre");
         Class<?> classRef = cf.geom.Triangle.class;
@@ -272,6 +288,22 @@ public class TriangleTest {
                 assertTrue(msg.toString(), result);
             } catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InstantiationException ex) {
                 fail("revoir Triangle.getSurface()");
+            }
+        }
+    }
+
+    @Test
+    public void p000038000_testMethodTriangletoString() {
+        System.out.println("Test Method Triangle.toString");
+        Class<?> classRef = cf.geom.Triangle.class;
+        Class<?> classToTest = Triangle.class;
+        for (int i = 0; i < 100; ++i) {
+            try {
+                StringBuilder msg = new StringBuilder("revoir Triangle.toString() --> ");
+                boolean result = ReflectUtilities.sameResult(msg, classRef, classToTest, "toString");
+                assertTrue(msg.toString(), result);
+            } catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InstantiationException ex) {
+                fail("revoir Triangle.toString()");
             }
         }
     }

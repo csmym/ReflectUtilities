@@ -77,4 +77,11 @@ public class Triangle {
         double p = (a + b + c)/2;
         return Math.sqrt(p * (p - a) * (p - b) * (p - c));
     }
+    
+    @Override
+    @tags.ToCheck(priority = 34)
+    @tags.ToCompare(value = cf.geom.Triangle.class, priority = 38)
+    public String toString() {
+        return "<"+c1+", "+c2+", "+c2+">";
+    }
 }
