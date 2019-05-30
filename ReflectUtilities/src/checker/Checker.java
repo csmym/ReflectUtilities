@@ -261,7 +261,7 @@ public class Checker {
         f("   } catch (SecurityException | NoSuchMethodException | NoSuchFieldException ex) {\n");
         f("        fail(\"Revoir set%s\");\n", initial(f.getName()));
         f("   } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {\n");
-        f("        fail(\"Il manque un constructeur pour tester set%s\");\n", initial(f.getName()));
+        f("        fail(\"set%s incorrect\");\n", initial(f.getName()));
         f("   }\n");
         f("}\n");
     }
@@ -308,7 +308,7 @@ public class Checker {
         f("   } catch (SecurityException | NoSuchMethodException | NoSuchFieldException ex) {\n");
         f("        fail(\"Revoir %s\");\n", getterName);
         f("   } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {\n");
-        f("        fail(\"Il manque un constructeur pour tester %s\");\n", getterName);
+        f("        fail(\"%s incorrect\");\n", getterName);
         f("   }\n");
         f("}\n");
     }

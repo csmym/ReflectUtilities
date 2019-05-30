@@ -3,7 +3,6 @@
  */
 package reflect;
 
-import checker.Checker;
 import exceptions.NoSimpleConstructor;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -103,6 +102,17 @@ public class ReflectUtilities {
         return getFromMethodTA(c, o, methodName, coupletv);
     }
 
+    /**
+     * Met à jour la valeur d'un attribut d'un object donné
+     *
+     * @param c l'objet de classe de l'objet donné
+     * @param o l'objet donné
+     * @param nom le nom de l'attribut
+     * @param v la valeur à affecter à cet attribut
+     * @throws NoSuchFieldException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     */
     public static void setAttribut(Class<?> c, Object o, String nom, Object v) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 
         Field fnom = c.getDeclaredField(nom);
@@ -234,6 +244,27 @@ public class ReflectUtilities {
         return equals(o1, o2, false);
     }
 
+    /**
+     * Egalité entre deux objets non nécessairement de mêmes types ou entre deux
+     * objets de type (wrapper de) primitif.
+     * 
+     * Si ce sont des (wrapper de) types primitifs, o1.equals(o2) est tout 
+     * simplement utilisé
+     * 
+     * Sinon, deux objets sont considérés égaux (au sens défini ICI)
+     * - s'ils possèdent le même nom simple (c'est à réfléchir si ceci doit rester)
+     * - s'ils possèdent les mêmes attributs aux valeurs égales (au sens défini ICI)
+     * 
+     * @param o1 à comparer avec o2
+     * @param o2 à comparer avec o1
+     * @param isPrimitive vrai si o1 et o2 sont de type primitif
+     * @return vrai si o1 est égal à o2 au sens défini ICI
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException 
+     */
     public static boolean equals(Object o1, Object o2, boolean isPrimitive) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         if (!o1.getClass().getSimpleName().equals(o2.getClass().getSimpleName())) {
             return false;
@@ -385,6 +416,21 @@ public class ReflectUtilities {
         return true;
     }
 
+    /**
+     * Retourne vrai si une méthode appliquée à deux objets différents donne le même résultat.
+     * @param msg message utilisé éventuellement en cas de différence pour les tests unitaires
+     * @param c1 
+     * @param c2
+     * @param methodName
+     * @param parameterTypes
+     * @return
+     * @throws NoSuchMethodException
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws InstantiationException
+     * @throws NoSuchFieldException 
+     */
     public static boolean sameResult(StringBuilder msg, Class<?> c1, Class<?> c2, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Object o1 = ReflectUtilities.randomValue(c1);
         Object o2 = ReflectUtilities.clone(o1, c2);
@@ -398,8 +444,17 @@ public class ReflectUtilities {
         Object r2 = m2.invoke(o2, param);
         msg.append(o1).append(" <> ").append(o2);
         try {
-            r1.getClass().getDeclaredMethod("equals", Object.class);
-            return r1.equals(r2);
+            if (r1.getClass() != r2.getClass()) {
+                // Il est possible que le retour de la méthode comparée ne soit
+                // par de même type dans la classe de référence et la classe testée.
+                // Dans ce cas il faut utiliser ReflectUtilities.equals(r1, r2)
+                // qui compare si r1 et r2 présentent les mêmes attributs 
+                // aux valeurs identiques.
+                return ReflectUtilities.equals(r1, r2);
+            } else {
+                r1.getClass().getDeclaredMethod("equals", Object.class);
+                return r1.equals(r2);
+            }
         } catch (NoSuchMethodException ex) {
             return ReflectUtilities.equals(r1, r2);
         }

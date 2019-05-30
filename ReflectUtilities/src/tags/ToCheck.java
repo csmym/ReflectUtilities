@@ -5,7 +5,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- *
+ * Annotation à placer devant
+ *    - une classe
+ *    - un attribut
+ *    - une méthode
+ * Pour vérifier dans tous les cas
+ *    - leur nom
+ *    - les modificateurs décrits dans le contenu de modifiers()
+ * Pour vérifier (en plus) dans le cas d'une classe
+ *    - sa super classe
+ * 
+ * La propriété value() est le message affiché par le test unitaire en cas 
+ * d'incohérence.
+ * 
+ * La propriété modifiers() définit les modificateurs à tester.
+ * 
+ * La propriété priority() définit un ordre de priorité dans l'exécution des 
+ * tests unitaires.
+ * 
  * @author yvan
  */
 @Retention(RetentionPolicy.RUNTIME)
