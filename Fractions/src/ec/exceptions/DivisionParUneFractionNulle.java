@@ -1,7 +1,7 @@
 /*
  * @author : Yvan Maillot (yvan.maillot@uha.fr)
  */
-package exceptions;
+package ec.exceptions;
 
 /**
  *

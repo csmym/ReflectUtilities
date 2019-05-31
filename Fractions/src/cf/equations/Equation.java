@@ -1,11 +1,10 @@
 /*
  * @author : Yvan Maillot (yvan.maillot@uha.fr)
  */
-package solution.equations;
+package cf.equations;
 
-import solution.exceptions.PasUneEquationDuPremierDegré;
-import solution.exceptions.DivisionParUneFractionNulle;
-import solution.fractions.Fraction;
+import cf.exceptions.DivisionParUneFractionNulle;
+import cf.fractions.Fraction;
 
 /**
  * Permet de résoudre l'équation ax+b=c, où a, b, c et x sont des fractions.
@@ -18,6 +17,8 @@ import solution.fractions.Fraction;
  * @author yvan
  */
 public final class Equation {
+    
+    public final Fraction a, b, c;
 
     private Fraction x = null;
     private int nbSolutions;
@@ -29,25 +30,35 @@ public final class Equation {
      * @param c une fraction de type Fraction
      */
     public Equation(Fraction a, Fraction b, Fraction c) throws DivisionParUneFractionNulle /* throws PasUneEquationDuPremierDegré */ {
-        //try {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        try {
             x = c.moins(b).diviséPar(a);
             nbSolutions = 1;
-        /*} catch (DivisionParUneFractionNulle ex) {
+        } catch (DivisionParUneFractionNulle ex) {
             if (b.numérateur == c.numérateur && b.dénominateur == c.dénominateur) {
                 nbSolutions = -1;
             } else {
                 nbSolutions = 0;
             }
             //throw new PasUneEquationDuPremierDegré();
-        }*/
+        }
     }
 
+    @tags.ToCheck
+    @tags.ToCompare(cf.equations.Equation.class)
     public Fraction getX() {
         return x;
     }
 
+    @tags.ToCheck
+    @tags.ToCompare(cf.equations.Equation.class)
     public int getNbSolutions() {
         return nbSolutions;
     }
     
+    public String toString() {
+        return a + "x" + " + " + b + " = " + c + "<=> x = " + x + "\n" + a.fois(x).plus(b);
+    }
 }

@@ -1,27 +1,23 @@
 /*
  * @author : Yvan Maillot (yvan.maillot@uha.fr)
  */
-package fractions;
+package cf.fractions;
 
-import exceptions.*;
-import static tags.CheckModifier.*;
-import tags.ToCheck;
+import cf.exceptions.InversionFractionNulle;
+import cf.exceptions.DénominateurNul;
+import cf.exceptions.DivisionParUneFractionNulle;
+import cf.exceptions.SituationImpossible;
 
 /**
  *
  * @author yvan
  */
-@ToCheck(priority = 1, value = "Modificateurs de Fraction", modifiers = {isAbstract, isFinal, isPublic})
+@tags.ToCheck(priority = 1, value = "Modificateurs de Fraction. Bien relire l'énoncé")
 public final class Fraction {
 
-    @ToCheck(
+    @tags.ToCheck(
             priority = 2,
-            value = "Les attributs",
-            modifiers = {
-                isFinal,
-                isPublic,
-                isProtected,
-                isPrivate})
+            value = "Les attributs. Bien relire l'énoncé")
     public final int numérateur, dénominateur;
 
     private static int pgcd(int a, int b) {
@@ -38,7 +34,7 @@ public final class Fraction {
         return (a * b) / pgcd(a, b);
     }
 
-    @ToCheck(priority = 3, value = "Le constructeur à deux paramètres")
+    @tags.ToCheck(priority = 3, value = "Le constructeur à deux paramètres. Bien relire l'énoncé")
     public Fraction(int numérateur, int dénominateur) throws DénominateurNul {
         if (dénominateur == 0) {
             throw new DénominateurNul();
@@ -53,27 +49,35 @@ public final class Fraction {
         }
     }
 
-    @ToCheck(priority = 4, value = "Le constructeur à un paramètre")
+    @tags.ToCheck(priority = 4, value = "Le constructeur à un paramètre. Bien relire l'énoncé")
     public Fraction(int numérateur) {
         this.numérateur = numérateur;
         this.dénominateur = 1;
     }
 
-    @ToCheck(priority = 5, value = "Le constructeur par défaut")
+    @tags.ToCheck(priority = 5, value = "Le constructeur par défaut. Bien relire l'énoncé")
     public Fraction() {
         this(0);
     }
 
-    @ToCheck(priority = 6, value = "affiche()")
+    @tags.ToCheck(priority = 6, value = "signature affiche()")    
     public void affiche() {
         if (dénominateur == 1 || numérateur == 0) {
             System.out.println(numérateur);
         } else {
             System.out.println(numérateur + "/" + dénominateur);
         }
+    }   
+    
+    public String toString() {
+        if (dénominateur == 1 || numérateur == 0) {
+            return numérateur+"";
+        } else {
+            return numérateur + "/" + dénominateur;
+        }
     }
 
-    @ToCheck(priority = 7, value = "opposé()")
+    @tags.ToCheck(priority = 7, value = "signature opposé()")
     public Fraction opposé() {
         try {
             return new Fraction(-numérateur, dénominateur);
@@ -82,7 +86,7 @@ public final class Fraction {
         }
     }
 
-    @ToCheck(priority = 8, value = "inverse()")
+    @tags.ToCheck(priority = 8, value = "signature inverse()")
     public Fraction inverse() throws InversionFractionNulle {
         try {
             return new Fraction(dénominateur, numérateur);
@@ -91,7 +95,7 @@ public final class Fraction {
         }
     }
 
-    @ToCheck(priority = 9, value = "plus(Fraction f)")
+    @tags.ToCheck(priority = 9, value = "signature plus(Fraction f)")
     public Fraction plus(Fraction f) {
         int ppcm = ppcm(dénominateur, f.dénominateur);
         try {
@@ -101,7 +105,7 @@ public final class Fraction {
         }
     }
 
-    @ToCheck(priority = 10, value = "fois(Fraction f)")
+    @tags.ToCheck(priority = 10, value = "signature fois(Fraction f)")
     public Fraction fois(Fraction f) {
         try {
             return new Fraction(numérateur * f.numérateur, dénominateur * f.dénominateur);
@@ -110,12 +114,12 @@ public final class Fraction {
         }
     }
 
-    @ToCheck(priority = 11, value = "moins(Fraction f)")
+    @tags.ToCheck(priority = 11, value = "signature moins(Fraction f)")
     public Fraction moins(Fraction f) {
         return plus(f.opposé());
     }
 
-    @ToCheck(priority = 12, value = "diviséPar(Fraction f)")
+    @tags.ToCheck(priority = 12, value = "signature diviséPar(Fraction f)")
     public Fraction diviséPar(Fraction f) throws DivisionParUneFractionNulle {
         try {
             return fois(f.inverse());

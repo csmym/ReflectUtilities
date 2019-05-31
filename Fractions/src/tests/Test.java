@@ -5,9 +5,12 @@
  */
 package tests;
 
-import equations.Equation;
-import exceptions.*;
-import fractions.Fraction;
+import cf.exceptions.InversionFractionNulle;
+import cf.exceptions.DénominateurNul;
+import cf.exceptions.DivisionParUneFractionNulle;
+import cf.exceptions.SituationImpossible;
+import cf.equations.Equation;
+import cf.fractions.Fraction;
 import java.util.Random;
 
 /**
