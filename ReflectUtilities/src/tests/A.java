@@ -11,11 +11,13 @@ import static tags.CheckModifier.isStatic;
 import tags.GetterToCheck;
 import tags.SetterToCheck;
 import tags.ToCheck;
+import tags.ToCompare;
 
 /**
  *
  * @author yvan
  */
+@ToCheck(priority = 10)
 public class A {
       
     @ToCheck(modifiers = {isFinal, isPrivate, isProtected, isPublic, isStatic},
@@ -44,6 +46,7 @@ public class A {
     
     @ToCheck(modifiers = {isFinal, isPrivate, isProtected, isPublic, isStatic},
             priority = 5)
+    @ToCompare(A.class)
     public A() {
         this.a = 0;
     }
@@ -70,6 +73,12 @@ public class A {
 
     public void setD(double d) {
         this.d = d;
+    }
+    
+    @ToCheck
+    @ToCompare(A.class)
+    public String toString() {
+        return "";
     }
      
 }
