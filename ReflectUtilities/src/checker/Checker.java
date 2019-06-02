@@ -19,8 +19,8 @@ import tags.ToCompare;
  */
 public class Checker {
 
-    private StringBuilder SB;
-    private Formatter F;
+    private final StringBuilder SB;
+    private final Formatter F;
     // La classe testée.
     private final Class<?> C;
 
@@ -36,8 +36,8 @@ public class Checker {
     }
 
     public final void check() {
-        SB = new StringBuilder();
-        F = new Formatter(SB);
+        //SB = new StringBuilder();
+        //F = new Formatter(SB);
         ToCheck annotation = C.getAnnotation(ToCheck.class);
         if (annotation != null) {
             checkClass(annotation);

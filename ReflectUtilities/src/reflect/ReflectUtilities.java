@@ -247,14 +247,15 @@ public class ReflectUtilities {
     /**
      * Egalité entre deux objets non nécessairement de mêmes types ou entre deux
      * objets de type (wrapper de) primitif.
-     * 
-     * Si ce sont des (wrapper de) types primitifs, o1.equals(o2) est tout 
+     *
+     * Si ce sont des (wrapper de) types primitifs, o1.equals(o2) est tout
      * simplement utilisé
-     * 
-     * Sinon, deux objets sont considérés égaux (au sens défini ICI)
-     * - s'ils possèdent le même nom simple (c'est à réfléchir si ceci doit rester)
-     * - s'ils possèdent les mêmes attributs aux valeurs égales (au sens défini ICI)
-     * 
+     *
+     * Sinon, deux objets sont considérés égaux (au sens défini ICI) - s'ils
+     * possèdent le même nom simple (c'est à réfléchir si ceci doit rester) -
+     * s'ils possèdent les mêmes attributs aux valeurs égales (au sens défini
+     * ICI)
+     *
      * @param o1 à comparer avec o2
      * @param o2 à comparer avec o1
      * @param isPrimitive vrai si o1 et o2 sont de type primitif
@@ -263,7 +264,7 @@ public class ReflectUtilities {
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
-     * @throws NoSuchMethodException 
+     * @throws NoSuchMethodException
      */
     public static boolean equals(Object o1, Object o2, boolean isPrimitive) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         if (!o1.getClass().getSimpleName().equals(o2.getClass().getSimpleName())) {
@@ -339,6 +340,27 @@ public class ReflectUtilities {
         return randomInt(min, max, false);
     }
 
+    /**
+     * Retourne un objet aléatoire en utilisant un constructeur défini par p
+     *
+     * @param c
+     * @param p
+     * @return
+     * @throws java.lang.NoSuchMethodException
+     * @throws java.lang.InstantiationException
+     * @throws java.lang.IllegalAccessException
+     * @throws java.lang.reflect.InvocationTargetException
+     */
+    public static Object randomValue(Class<?> c, Class<?>... p) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        if (p.length == 0) {
+            Constructor<?> k = c.getConstructor(p);
+            Object o = k.newInstance(fillParametersArray(k));
+            return o;
+        } else {
+            return randomValue(c);
+        }
+    }
+
     public static Object randomValue(Class<?> c) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         if (c == void.class) {
             return null;
@@ -348,7 +370,7 @@ public class ReflectUtilities {
 
         } else if (c == int.class
                 || c == byte.class) {
-            return R.nextInt();
+            return 25 - R.nextInt(50);
 
         } else if (c == char.class) {
             return (char) R.nextInt();
@@ -417,9 +439,16 @@ public class ReflectUtilities {
     }
 
     /**
-     * Retourne vrai si une méthode appliquée à deux objets différents donne le même résultat.
-     * @param msg message utilisé éventuellement en cas de différence pour les tests unitaires
-     * @param c1 
+     * Retourne vrai si une méthode appliquée à deux objets différents donne le
+     * même résultat.
+     * #### LIMITATION
+     * Cette méthode est très limitée. Elle ne fonctionne bien que si les 
+     * paramètres des constructeurs comme des méthodes sont de types simples.
+     * #### LIMITATION
+     *
+     * @param msg message utilisé éventuellement en cas de différence pour les
+     * tests unitaires
+     * @param c1
      * @param c2
      * @param methodName
      * @param parameterTypes
@@ -429,7 +458,7 @@ public class ReflectUtilities {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws InstantiationException
-     * @throws NoSuchFieldException 
+     * @throws NoSuchFieldException
      */
     public static boolean sameResult(StringBuilder msg, Class<?> c1, Class<?> c2, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Object o1 = ReflectUtilities.randomValue(c1);
@@ -446,7 +475,7 @@ public class ReflectUtilities {
         try {
             if (r1.getClass() != r2.getClass()) {
                 // Il est possible que le retour de la méthode comparée ne soit
-                // par de même type dans la classe de référence et la classe testée.
+                // pas de même type dans la classe de référence et la classe testée.
                 // Dans ce cas il faut utiliser ReflectUtilities.equals(r1, r2)
                 // qui compare si r1 et r2 présentent les mêmes attributs 
                 // aux valeurs identiques.
